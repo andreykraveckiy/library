@@ -1,0 +1,16 @@
+Andrey Kraveckiy;ankr@ex.com;Dnepr;Golicina;4;
+Alexandr Beldiyan;ankr@ex.com;Dnepr;Golicina;4;
+Sergey Evtushenko;ankr@ex.com;Dnepr;Golicina;4;
+Dmitriy	Litvinov;ankr@ex.com;Dnepr;Golicina;4;
+Alexandr Mirshavka;ankr@ex.com;Dnepr;Golicina;4;
+Yaroslav Bezrukaviy;ankr@ex.com;Dnepr;Golicina;4;
+Yurii Orlov;ankr@ex.com;Dnepr;Golicina;4;
+Sergey Shakhov;ankr@ex.com;Dnepr;Golicina;4;
+Kirill Shitikov;ankr@ex.com;Dnepr;Golicina;4;
+Tatyana	Solodkaya;ankr@ex.com;Dnepr;Golicina;4;
+Maxim Koptsov;ankr@ex.com;Dnepr;Golicina;4;
+Dmitriy Karachentsov;ankr@ex.com;Dnepr;Golicina;4;
+Sviatoslav Sidelnikov;ankr@ex.com;Dnepr;Golicina;4;
+Sergey Khoma;ankr@ex.com;Dnepr;Golicina;4;
+Andrei Kravetskyi;ankr@ex.com;Dnepr;Golicina;4;
+Ruslan Tolstov;ankr@ex.com;Dnepr;Golicina;4;

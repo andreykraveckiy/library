@@ -1,10 +1,7 @@
 class Reader
-  def initialize (name, email, city, street, house)
-    @name = name
-    @email = email
-    @city = city
-    @street = street
-    @house = house
+  attr_reader :name
+  def initialize (params)
+    @name, @email, @city, @street, @house = params
   end
 
   def to_s

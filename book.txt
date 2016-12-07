@@ -1,0 +1,15 @@
+Caliban;Aizek Asimov;
+People like a goods;Herbert Uells;
+About person, life and nature;Grigory Skovoroda;
+Ruslan and Liudmila;Alexander Pushkin;
+Evgeniy Onegin;Alexander Pushkin;
+About King Saltan...;Alexander Pushkin;
+Dead Souls;Nikolai Gogol;
+Taras Bulba;Nikolai Gogol;
+Alice;Lewis Carroll;
+Notrdamm de'Pari;Victor Hugo;
+Romeo adn Juliett;William Shakespeare;
+Gamlet;William Shakespeare;
+A dream in a summer night;William Shakespeare;
+Tom Souer;Mark Twenn;
+Stories;Mark Twenn;

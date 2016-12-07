@@ -1,0 +1,9 @@
+Aizek Asimov;Cooll author about robots;
+Herbert Uells;Write about science and politic;
+Grigory Skovoroda;Famous Ukrainian philosoph;
+Alexander Pushkin;The greatest sun of russian poetry;
+Nikolai Gogol;Russian dramatist, novelist and short story write. Write horror about woman.;
+Lewis Carroll;;
+Victor Hugo;;
+William Shakespeare;;
+Mark Twenn;Write funny stories.;

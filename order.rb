@@ -1,8 +1,7 @@
 class Order
-  def initialize(book, reader, date)
-    @book = book
-    @reader = reader
-    @date = date
+  attr_reader :book, :reader
+  def initialize(params)
+    @book, @reader, @date = params
   end
 
   def to_s
