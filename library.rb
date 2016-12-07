@@ -12,7 +12,7 @@ class Library
     @orders = []
     puts 'Use :load method for load library from file.'
   end
-# for working with file
+
   def load
     load_from_file('Author', @authors, 'author.txt')
     load_from_file('Book', @books, 'book.txt')
@@ -27,34 +27,9 @@ class Library
     save_to_file(@orders, 'order.txt')
   end
 
-  def load_from_file(class_name, collection, file_name)
-    begin
-      file = File.open(file_name, 'r')
-      file.each_line { |line| new_class_instance(class_name, collection, line.split(';')) }
-      file.close
-    rescue Exception => e
-      puts e.message
-    end
-  end
-
-  def save_to_file(collection, file_name)
-    begin          
-      return if collection.empty?
-      file = File.open(file_name, 'w')  
-      collection.each { |obj| file.puts obj }
-      file.close
-    rescue Exception => e
-      puts e.message
-    end
-  end
-
 # for interface
-  def new_class_instance(class_name, collection, params)
-    collection << Kernel.const_get(class_name).new(params)
-  end  
-
   def new_author(params)
-    @authors << Author.new(params)
+    new_class_instance("Author", @authors, params)
   end
 
   def new_book(params)
@@ -62,11 +37,11 @@ class Library
       puts "Library does not have the author #{params.last}"
       return
     end
-    @books << Book.new(params)
+    new_class_instance("Book", @books, params)
   end
 
   def new_reader(params)
-    @readers << Reader.new(params)
+    new_class_instance("Reader", @readers, params)
   end
 
   def new_order(params)
@@ -78,23 +53,8 @@ class Library
       puts "#{params[1]} wasn't registered at this library"
       return
     end
-    @orders << Order.new(params)
-  end
-
-  def fake_orders
-    count_book = @books.length
-    count_reader = @readers.length
-    (count_book * count_reader / 4).times do 
-      book = @books[rand(count_book)].title
-      reader = @readers[rand(count_reader)].name
-      date = time_rand
-      new_order([book, reader, date])     
-    end
-  end
-
-  def time_rand from = Time.local(2014, 1, 1), to = Time.now
-    Time.at(from + rand * (to.to_f - from.to_f))
-  end
+    new_class_instance("Order", @orders, params)
+  end  
 
   def best_reader
     readers = @orders.map(&:reader)
@@ -130,4 +90,31 @@ class Library
     uniq.sort! { |x,y| books.count(y)<=>books.count(x) }
     "#{uniq.first}-#{books.count(uniq.first)}; #{uniq[1]}-#{books.count(uniq[1])}; #{uniq[3]}-#{books.count(uniq[2])}"
   end
+
+  private
+
+    def load_from_file(class_name, collection, file_name)
+      begin
+        file = File.open(file_name, 'r')
+        file.each_line { |line| new_class_instance(class_name, collection, line.split(';')) }
+        file.close
+      rescue Exception => e
+        puts e.message
+      end
+    end
+
+    def save_to_file(collection, file_name)
+      begin          
+        return if collection.empty?
+        file = File.open(file_name, 'w')  
+        collection.each { |obj| file.puts obj }
+        file.close
+      rescue Exception => e
+        puts e.message
+      end
+    end
+
+    def new_class_instance(class_name, collection, params)
+      collection << Kernel.const_get(class_name).new(params)
+    end 
 end

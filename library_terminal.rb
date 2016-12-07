@@ -66,10 +66,25 @@ def create_order
   $lib.new_order(params)
 end
 
+def time_rand from = Time.local(2014, 1, 1), to = Time.now
+  Time.at(from + rand * (to.to_f - from.to_f))
+end
+
+def seed_orders
+  count_book = $lib.books.length
+  count_reader = $lib.readers.length
+  (count_book * count_reader).times do 
+    book = $lib.books[rand(count_book)].title
+    reader = $lib.readers[rand(count_reader)].name
+    date = time_rand
+    $lib.new_order([book, reader, date])     
+  end
+end
+
 puts hello_string
 $lib.load
 while true
-  case p = $stdin.gets.chomp
+  case p = $stdin.gets.chomp.downcase
   when 'q'
     break
   when 'h'
@@ -93,7 +108,7 @@ while true
   when 'lw'
     puts $lib.save
   when 'eo'
-    $lib.fake_orders
+    seed_orders
   when 'br'
     puts $lib.best_reader
   when 'pb'
