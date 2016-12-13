@@ -21,7 +21,7 @@ hello_string = %{
 +-----------------------------------+
   }
 
-$lib = Library.new
+@lib = Library.new
 
 def create_author
   params = []
@@ -29,7 +29,7 @@ def create_author
   params << $stdin.gets.chomp
   puts 'Write author\'s biography:'
   params << $stdin.gets.chomp
-  $lib.new_author(params)
+  @lib.new_author(params)
 end
 
 def create_book
@@ -38,7 +38,7 @@ def create_book
   params << $stdin.gets.chomp
   puts 'Write author\'s full name:'
   params << $stdin.gets.chomp
-  $lib.new_book(params)
+  @lib.new_book(params)
 end
 
 def create_reader
@@ -53,7 +53,7 @@ def create_reader
   params << $stdin.gets.chomp
   puts 'Enter reader\'s house:'
   params << $stdin.gets.chomp
-  $lib.new_reader(params)
+  @lib.new_reader(params)
 end
 
 def create_order
@@ -63,7 +63,7 @@ def create_order
   puts 'Write user\'s full name:'
   params << $stdin.gets.chomp
   params << Time.now
-  $lib.new_order(params)
+  @lib.new_order(params)
 end
 
 def time_rand from = Time.local(2014, 1, 1), to = Time.now
@@ -71,18 +71,18 @@ def time_rand from = Time.local(2014, 1, 1), to = Time.now
 end
 
 def seed_orders
-  count_book = $lib.books.length
-  count_reader = $lib.readers.length
+  count_book = @lib.books.length
+  count_reader = @lib.readers.length
   (count_book * count_reader).times do 
-    book = $lib.books[rand(count_book)].title
-    reader = $lib.readers[rand(count_reader)].name
+    book = @lib.books[rand(count_book)].title
+    reader = @lib.readers[rand(count_reader)].name
     date = time_rand
-    $lib.new_order([book, reader, date])     
+    @lib.new_order([book, reader, date])     
   end
 end
 
 puts hello_string
-$lib.load
+@lib.load
 while true
   case p = $stdin.gets.chomp.downcase
   when 'q'
@@ -92,29 +92,31 @@ while true
   when 'ac'
     create_author
   when 'as'
-    puts $lib.authors
+    puts @lib.authors
   when 'bc'
     create_book
   when 'bs'
-    puts $lib.books
+    puts @lib.books
   when 'rc'
     create_reader
   when 'rs'
-    puts $lib.readers
+    puts @lib.readers
   when 'oc'
     create_order
   when 'os'
-    puts $lib.orders
+    puts @lib.orders
   when 'lw'
-    puts $lib.save
+    puts @lib.save
   when 'eo'
     seed_orders
   when 'br'
-    puts $lib.best_reader
+    puts 'Best reader is(are):'
+    puts @lib.best_reader
   when 'pb'
-    puts $lib.popular_book
+    puts 'Popular book is(are):'
+    puts @lib.popular_book
   when '3mp'
-    puts $lib.the_3_most_popular
+    puts @lib.the_3_most_popular
   else
     puts "I can't work with command #{p}"
   end    

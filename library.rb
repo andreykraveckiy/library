@@ -14,17 +14,15 @@ class Library
   end
 
   def load
-    load_from_file('Author', @authors, 'author.txt')
-    load_from_file('Book', @books, 'book.txt')
-    load_from_file('Reader', @readers, 'reader.txt')
-    load_from_file('Order', @orders, 'order.txt')
+    %w(Author Book Reader Order).each do |name|
+      load_from_file(name)
+    end
   end
 
   def save
-    save_to_file(@authors, 'author.txt')
-    save_to_file(@books, 'book.txt')
-    save_to_file(@readers, 'reader.txt')
-    save_to_file(@orders, 'order.txt')
+    %w(Author Book Reader Order).each do |name|
+      save_to_file(name)
+    end
   end
 
 # for interface
@@ -53,68 +51,64 @@ class Library
       puts "#{params[1]} wasn't registered at this library"
       return
     end
-    new_class_instance("Order", @orders, params)
+    new_class_instance("Order", params)
   end  
 
   def best_reader
     readers = @orders.map(&:reader)
-    uniq = readers.uniq
-    good_name = uniq.first
-    uniq.each do |name|
-      good_name = name if readers.count(good_name) < readers.count(name)
-    end
-    answer = [good_name]
-    uniq.each do |name|
-      answer << name if readers.count(good_name) == readers.count(name) && good_name != name
-    end
-    answer
+    uniq_readers = readers.uniq
+    uniq_readers.sort! { |x,y| readers.count(y) <=> readers.count(x) }
+    # in case when we have few readers with equel quantity read books
+    uniq_readers.select { |e| readers.count(e) == readers.count(uniq_readers.first) }
   end
 
   def popular_book
     books = @orders.map(&:book)
-    uniq = books.uniq
-    good_title = uniq.first
-    uniq.each do |title|
-      good_title = title if books.count(good_title) < books.count(title)
-    end
-    answer = [good_title]
-    uniq.each do |title|
-      answer << title if books.count(good_title) == books.count(title) && good_title != title
-    end
-    answer
+    uniq_books = books.uniq
+    uniq_books.sort! { |x,y| books.count(y) <=> books.count(x) }
+    # in case when we have few books with equel quantity in orders
+    uniq_books.select { |e| books.count(e) == books.count(uniq_books.first) }
   end
 
   def the_3_most_popular
     books = @orders.map(&:book)
-    uniq = books.uniq
-    uniq.sort! { |x,y| books.count(y)<=>books.count(x) }
-    "#{uniq.first}-#{books.count(uniq.first)}; #{uniq[1]}-#{books.count(uniq[1])}; #{uniq[3]}-#{books.count(uniq[2])}"
+    uniq_books = books.uniq
+    uniq_books.sort! { |x,y| books.count(y) <=> books.count(x) }
+
   end
 
   private
 
-    def load_from_file(class_name, collection, file_name)
+    def load_from_file(class_name)
       begin
-        file = File.open(file_name, 'r')
-        file.each_line { |line| new_class_instance(class_name, collection, line.split(';')) }
+        file = File.open(to_file_name(class_name), 'r')
+        file.each_line { |line| new_class_instance(class_name, line.split(';')) }
         file.close
       rescue Exception => e
         puts e.message
       end
     end
 
-    def save_to_file(collection, file_name)
+    def to_file_name(name)
+      name.downcase + '.txt'
+    end
+
+    def to_collection(name)
+      instance_variable_get("@#{name.downcase + 's'}")
+    end
+
+    def save_to_file(class_name)
       begin          
-        return if collection.empty?
-        file = File.open(file_name, 'w')  
-        collection.each { |obj| file.puts obj }
+        return if to_collection(class_name).empty?
+        file = File.open(to_file_name(class_name), 'w')  
+        to_collection(class_name).each { |obj| file.puts obj }
         file.close
       rescue Exception => e
         puts e.message
       end
     end
 
-    def new_class_instance(class_name, collection, params)
-      collection << Kernel.const_get(class_name).new(params)
+    def new_class_instance(class_name, params)
+      to_collection(class_name) << Kernel.const_get(class_name).new(params)
     end 
 end
