@@ -73,7 +73,7 @@ end
 def seed_orders
   count_book = @lib.books.length
   count_reader = @lib.readers.length
-  (count_book * count_reader).times do 
+  (count_book * count_reader / 2).times do 
     book = @lib.books[rand(count_book)].title
     reader = @lib.readers[rand(count_reader)].name
     date = time_rand
@@ -116,7 +116,7 @@ while true
     puts 'Popular book is(are):'
     puts @lib.popular_book
   when '3mp'
-    puts @lib.the_3_most_popular
+    puts "3 most popular books were read by #{@lib.the_3_most_popular} readers."
   else
     puts "I can't work with command #{p}"
   end    

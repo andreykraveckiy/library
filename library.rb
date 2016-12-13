@@ -4,6 +4,7 @@ require './reader'
 require './order'
 
 class Library
+  REQUIRED_COLLECTIONS = %w(Author Book Reader Order)
   attr_reader :authors, :books, :readers, :orders
   def initialize
     @authors = []
@@ -14,13 +15,13 @@ class Library
   end
 
   def load
-    %w(Author Book Reader Order).each do |name|
+    REQUIRED_COLLECTIONS.each do |name|
       load_from_file(name)
     end
   end
 
   def save
-    %w(Author Book Reader Order).each do |name|
+    REQUIRED_COLLECTIONS.each do |name|
       save_to_file(name)
     end
   end
@@ -74,7 +75,11 @@ class Library
     books = @orders.map(&:book)
     uniq_books = books.uniq
     uniq_books.sort! { |x,y| books.count(y) <=> books.count(x) }
-
+    answer = []
+    uniq_books.first(3).each do |book|
+      answer += @orders.map { |ord| ord.reader if ord.book == book }
+    end
+    answer.compact.uniq.length
   end
 
   private
