@@ -32,7 +32,7 @@ class Library
   end
 
   def new_book(params)
-    if !@authors.map(&:name).index(params.last)
+    unless @authors.map(&:name).index(params.last)
       puts "Library does not have the author #{params.last}"
       return
     end
@@ -44,11 +44,11 @@ class Library
   end
 
   def new_order(params)
-    if !@books.map(&:title).index(params.first)
+    unless @books.map(&:title).index(params.first)
       puts "Library does not have the book #{params.first}"
       return
     end
-    if !@readers.map(&:name).index(params[1])
+    unless @readers.map(&:name).index(params[1])
       puts "#{params[1]} wasn't registered at this library"
       return
     end
@@ -60,6 +60,10 @@ class Library
     uniq_readers = readers.uniq
     uniq_readers.sort! { |x,y| readers.count(y) <=> readers.count(x) }
     # in case when we have few readers with equel quantity read books
+    # example in the order txt file
+    # Best reader is(are):
+    # Andrey Kraveckiy
+    # Sergey Evtushenko
     uniq_readers.select { |e| readers.count(e) == readers.count(uniq_readers.first) }
   end
 
@@ -68,6 +72,12 @@ class Library
     uniq_books = books.uniq
     uniq_books.sort! { |x,y| books.count(y) <=> books.count(x) }
     # in case when we have few books with equel quantity in orders
+    # example in the order txt file
+    # Popular book is(are):
+    # Ruslan and Liudmila
+    # People like a goods
+    # About person, life and nature
+
     uniq_books.select { |e| books.count(e) == books.count(uniq_books.first) }
   end
 
