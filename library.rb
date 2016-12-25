@@ -57,20 +57,13 @@ class Library
 
   def best_reader
     group_by_reader = @orders.group_by { |e| e.reader }
-    sort_readers = group_by_reader.keys.sort { |x,y| group_by_reader[y].count <=> group_by_reader[x].count}
-    #old method longer by 1 line :^)
-    #readers = @orders.map(&:reader)
-    #uniq_readers = readers.uniq
-    #uniq_readers.sort! { |x,y| readers.count(y) <=> readers.count(x) }
-    # Best reader is(are):
-    # Andrey Kraveckiy
-    # Sergey Evtushenko
+    sort_readers = group_by_reader.keys.sort { |x,y| group_by_reader[y].count <=> group_by_reader[x].count }
     sort_readers.select { |e| group_by_reader[e].count == group_by_reader[sort_readers.first].count }
   end
 
   def popular_book(counter = nil)
     group_by_book= @orders.group_by { |e| e.book }
-    sort_books = group_by_book.keys.sort { |x,y| group_by_book[y].count <=> group_by_book[x].count}
+    sort_books = group_by_book.keys.sort { |x,y| group_by_book[y].count <=> group_by_book[x].count }
     return sort_books.first(counter) if counter
     sort_books.select { |e| group_by_book[e].count == group_by_book[sort_books.first].count }
   end
