@@ -56,40 +56,28 @@ class Library
   end  
 
   def best_reader
-    readers = @orders.map(&:reader)
-    uniq_readers = readers.uniq
-    uniq_readers.sort! { |x,y| readers.count(y) <=> readers.count(x) }
-    # in case when we have few readers with equel quantity read books
-    # example in the order txt file
+    group_by_reader = @orders.group_by { |e| e.reader }
+    sort_readers = group_by_reader.keys.sort { |x,y| group_by_reader[y].count <=> group_by_reader[x].count}
+    #old method longer by 1 line :^)
+    #readers = @orders.map(&:reader)
+    #uniq_readers = readers.uniq
+    #uniq_readers.sort! { |x,y| readers.count(y) <=> readers.count(x) }
     # Best reader is(are):
     # Andrey Kraveckiy
     # Sergey Evtushenko
-    uniq_readers.select { |e| readers.count(e) == readers.count(uniq_readers.first) }
+    sort_readers.select { |e| group_by_reader[e].count == group_by_reader[sort_readers.first].count }
   end
 
-  def popular_book
-    books = @orders.map(&:book)
-    uniq_books = books.uniq
-    uniq_books.sort! { |x,y| books.count(y) <=> books.count(x) }
-    # in case when we have few books with equel quantity in orders
-    # example in the order txt file
-    # Popular book is(are):
-    # Ruslan and Liudmila
-    # People like a goods
-    # About person, life and nature
-
-    uniq_books.select { |e| books.count(e) == books.count(uniq_books.first) }
+  def popular_book(counter = nil)
+    group_by_book= @orders.group_by { |e| e.book }
+    sort_books = group_by_book.keys.sort { |x,y| group_by_book[y].count <=> group_by_book[x].count}
+    return sort_books.first(counter) if counter
+    sort_books.select { |e| group_by_book[e].count == group_by_book[sort_books.first].count }
   end
 
   def the_3_most_popular
-    books = @orders.map(&:book)
-    uniq_books = books.uniq
-    uniq_books.sort! { |x,y| books.count(y) <=> books.count(x) }
-    answer = []
-    uniq_books.first(3).each do |book|
-      answer += @orders.map { |ord| ord.reader if ord.book == book }
-    end
-    answer.compact.uniq.length
+    books = popular_book(3)
+    @orders.select { |e| books.include?(e.book) }.map(&:reader).uniq.count
   end
 
   private
