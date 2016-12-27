@@ -55,17 +55,12 @@ class Library
     new_class_instance("Order", params)
   end  
 
-  def best_reader
-    group_by_reader = @orders.group_by { |e| e.reader }
-    sort_readers = group_by_reader.keys.sort { |x,y| group_by_reader[y].count <=> group_by_reader[x].count }
-    sort_readers.select { |e| group_by_reader[e].count == group_by_reader[sort_readers.first].count }
+  def best_reader(counter = nil)
+    popular_in_order_by(:reader, counter)
   end
 
   def popular_book(counter = nil)
-    group_by_book= @orders.group_by { |e| e.book }
-    sort_books = group_by_book.keys.sort { |x,y| group_by_book[y].count <=> group_by_book[x].count }
-    return sort_books.first(counter) if counter
-    sort_books.select { |e| group_by_book[e].count == group_by_book[sort_books.first].count }
+    popular_in_order_by(:book, counter)
   end
 
   def the_3_most_popular
@@ -83,6 +78,13 @@ class Library
       rescue Exception => e
         puts e.message
       end
+    end
+
+    def popular_in_order_by(field, counter = nil)
+      grouped_by = @orders.group_by { |e| e.send(field) }
+      sort_fields = grouped_by.keys.sort { |x,y| grouped_by[y].count <=> grouped_by[x].count }
+      return sort_fields.first(counter) if counter
+      sort_fields.select { |e| grouped_by[e].count == grouped_by[sort_fields.first].count }
     end
 
     def to_file_name(name)
