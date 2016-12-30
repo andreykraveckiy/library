@@ -82,9 +82,10 @@ class Library
 
     def popular_in_order_by(field, counter = nil)
       grouped_by = @orders.group_by { |e| e.send(field) }
-      sort_fields = grouped_by.keys.sort { |x,y| grouped_by[y].count <=> grouped_by[x].count }
-      return sort_fields.first(counter) if counter
-      sort_fields.select { |e| grouped_by[e].count == grouped_by[sort_fields.first].count }
+      sort_fields = grouped_by.sort_by { |name, orders| orders.size }.reverse
+      return sort_fields.map { |name, orders| name }.first(counter) if counter
+      sort_fields.select { |name, orders| orders.count == sort_fields.first.last.count }
+                          .map {|name, orders| name }
     end
 
     def to_file_name(name)
